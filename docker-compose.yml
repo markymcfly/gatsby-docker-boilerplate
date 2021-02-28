@@ -1,0 +1,31 @@
+version: "3.9"
+services:
+    web:
+#        depends_on:
+#            - backend
+        build:
+            context: .
+            dockerfile: Dockerfile
+        # Expose ports [HOST:CONTAINER}
+        ports:
+            - "3000:8000"
+        volumes:
+            # Mounts the project directory on the host to /app inside the container,
+            # allowing you to modify the code without having to rebuild the image.
+            - .:/app
+            # Just specify a path and let the Engine create a volume.
+            # Data present in the base image at the specified mount point will be copied
+            # over to the new volume upon volume initialization.
+            # node_modules from this new volume will be used and not from your local dev env.
+            - /app/node_modules/
+        environment:
+            - NODE_ENV=development
+            - GATSBY_WEBPACK_PUBLICPATH=/
+            - CHOKIDAR_USEPOLLING=1
+        # Set environment variables from this file
+#        env_file:
+#            - .env
+        working_dir: /app
+
+#    backend:
+    # You could define your backend service here.
